@@ -1,8 +1,9 @@
 
 import express, { NextFunction, Request, Response } from 'express'
 import httpStatus from "http-status-codes";
-import { router } from './routes';
-import { globalErrorHandler } from './middleware/globalErrorHandler';
+import { globalErrorHandler } from './app/middleware/globalErrorHandler';
+import { router } from './app/routes';
+import { notFound } from './app/middleware/notFound';
 export const app = express();
 
 app.use(express.json());
@@ -17,3 +18,4 @@ app.get("/", (req: Request, res:Response) => {
 
 //global error hanlder
 app.use(globalErrorHandler);
+app.use(notFound)
