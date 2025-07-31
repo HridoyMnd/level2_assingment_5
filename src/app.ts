@@ -1,5 +1,5 @@
 
-import express, { NextFunction, Request, Response } from 'express'
+import express, { Request, Response } from 'express'
 import httpStatus from "http-status-codes";
 import { globalErrorHandler } from './app/middleware/globalErrorHandler';
 import { router } from './app/routes';

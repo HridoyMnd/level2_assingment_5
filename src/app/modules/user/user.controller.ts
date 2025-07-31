@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status-codes";
 import { ServiceController } from "./user.service";
@@ -17,8 +16,8 @@ const createUserC = catchAsync(async (req: Request, res: Response, next: NextFun
       message: "User created Successfully",
       data: user
     });
+});
 
-})
 
 // get all users
 const getAllUsersC = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -32,7 +31,7 @@ const getAllUsersC = catchAsync(async (req: Request, res: Response, next: NextFu
       data: users.data,
       meta: users.meta
     });
-})
+});
 
 
 // update user
