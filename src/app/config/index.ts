@@ -11,11 +11,13 @@ interface EnvConfig {
     JWT_ACCESS_EXPIRESIN:string,
     JWT_REFRESH_EXPIRESIN:string,
     BCRYPT_SALT_ROUND:number,
+    ADMIN_EMAIL: string
+    ADMIN_PASSWORD:string, 
 }
 
 const loadEnvVariables = (): EnvConfig => {
   const requrementVariables: string[] = [
-"PORT", "DB_URL", "NODE_ENV","JWT_ACCESS_SECRET", "JWT_REFRESH_SECRET", "JWT_REFRESH_EXPIRESIN", "JWT_ACCESS_EXPIRESIN", "BCRYPT_SALT_ROUND",
+"PORT", "DB_URL", "NODE_ENV","JWT_ACCESS_SECRET", "JWT_REFRESH_SECRET", "JWT_REFRESH_EXPIRESIN", "JWT_ACCESS_EXPIRESIN", "BCRYPT_SALT_ROUND", "ADMIN_EMAIL", "ADMIN_PASSWORD",
   ];
 
   requrementVariables.map((key) => {
@@ -32,6 +34,8 @@ const loadEnvVariables = (): EnvConfig => {
     JWT_REFRESH_EXPIRESIN:process.env.JWT_REFRESH_EXPIRESIN as string,
     JWT_ACCESS_EXPIRESIN:process.env.JWT_ACCESS_EXPIRESIN as string,
     BCRYPT_SALT_ROUND:parseInt(process.env.BCRYPT_SALT_ROUND as string, 10),
+    ADMIN_EMAIL: process.env.ADMIN_EMAIL as string,
+    ADMIN_PASSWORD: process.env.ADMIN_PASSWORD as string,
   };
 };
 

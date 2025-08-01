@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import {Server} from 'http'
 import { envVars } from "./app/config";
 import { app } from "./app";
+import { seedAdmin } from "./app/utils/seedAdmin";
 
 
 let server: Server;
@@ -20,7 +21,11 @@ const startServer = async () => {
   }
 };
 
-startServer();
+( async() => {
+  await startServer();
+  await seedAdmin();
+})();
+
 
 
 // unhandle rejection 
