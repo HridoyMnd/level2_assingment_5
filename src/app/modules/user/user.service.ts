@@ -51,12 +51,12 @@ if(!isUserExist) {
 }
 
   if(payload.role) {
-    if(decodedTokenn.role ===UserRole.USER || decodedTokenn.role === UserRole.AGENT) {
+    if(decodedTokenn.role !== UserRole.ADMIN) {
       throw new AppError(httpStatus.FORBIDDEN, "You are not Authorized"); 
     }
   }
   if(payload.isActive || payload.isDeleted || payload.isVerified) {
-    if(decodedTokenn.role === UserRole.USER || decodedTokenn.role === UserRole.AGENT){
+    if(decodedTokenn.role !== UserRole.ADMIN){
       throw new AppError(httpStatus.FORBIDDEN, "You are not Authorized");
     }
   }
@@ -67,7 +67,6 @@ if(!isUserExist) {
   const newUpdatedUser = await User.findByIdAndUpdate(userId, payload, {new:true, runValidators:true});
   return newUpdatedUser;
 };
-
 
 
 // user service controller

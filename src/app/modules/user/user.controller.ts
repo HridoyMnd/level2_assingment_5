@@ -3,6 +3,7 @@ import httpStatus from "http-status-codes";
 import { ServiceController } from "./user.service";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
+import { JwtPayload } from "jsonwebtoken";
 
 
 // create user 
@@ -35,24 +36,24 @@ const getAllUsersC = catchAsync(async (req: Request, res: Response, next: NextFu
 
 
 // update user
-// const updateUserC = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-//     const userId = req.params.id;
-//     const verifiedToken = req.user;
-//     const payload = req.body;
-//     const user = await ServiceController.updateUserS(userId, payload, verifiedToken);
+const updateUserC = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.params.id;
+    const verifiedToken = req.user
+    const payload = req.body;
+    const user = await ServiceController.updateUserS(userId, payload, verifiedToken as JwtPayload);
 
-//     //response send
-//     sendResponse(res, {
-//       success: true, 
-//       statusCode: httpStatus.CREATED,  
-//       message: "User updated Successfully",
-//       data: user
-//     });
-// });
+    //response send
+    sendResponse(res, {
+      success: true, 
+      statusCode: httpStatus.CREATED,  
+      message: "User updated Successfully",
+      data: user
+    });
+});
 
 //  controller
 export const userController = {
   createUserC,
   getAllUsersC,
-  // updateUserC
+  updateUserC
 };

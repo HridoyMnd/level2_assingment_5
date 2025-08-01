@@ -3,7 +3,6 @@ import { User } from "../user/user.model";
 import httpStatus from 'http-status-codes';
 import bcryptjs from 'bcryptjs';
 import { IUser } from "../user/user.interface";
-import jwt from 'jsonwebtoken';
 import { jwtController } from "../../utils/jwt";
 import { envVars } from "../../config";
 
