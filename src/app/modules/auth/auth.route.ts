@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { authController } from "./auth.controller";
+const router = Router();
 
-
-const router = Router()
 
 // auth route apis endpoint
-router.post("/login", authController.credentialLoginC)
+router.post("/login", authController.credentialLoginC);
+router.post("/refresh-token", authController.getAccessTokenC); 
 
 
 // route named export

@@ -4,6 +4,8 @@ interface TMeta {
     total: number
 }
 
+
+// response interface
 interface TResponse <T> {
     statusCode: number, 
     success: boolean, 
@@ -13,6 +15,7 @@ interface TResponse <T> {
 }
 
 
+// create send response
 export const sendResponse = <T> (res:Response, data: TResponse<T> ) => {
     res.status(data.statusCode).json({
         StatusCodes: data.statusCode,

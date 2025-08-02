@@ -1,4 +1,3 @@
-
 import { Types } from "mongoose";
 
 // IAuthProvider interface
@@ -22,6 +21,7 @@ export enum UserRole {
 }
 
 
+// User interface
 export interface IUser {
   _id?:Types.ObjectId;
   name: string;

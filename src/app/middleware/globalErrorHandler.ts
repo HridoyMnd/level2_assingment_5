@@ -1,12 +1,12 @@
-
 import { NextFunction, Request, Response } from 'express';
 import { envVars } from '../config';
 import { AppError } from '../ErrorHelper/AppError';
+
+
+// global error hanlder function
 export const globalErrorHandler =((err:any, req:Request, res:Response, next: NextFunction) => {
-
 let statusCode = 500;
-let message = `Something is wrong, ${err.message}`
-
+let message = `Something is wrong, ${err.message}`;
 
 if(err instanceof AppError) {
     statusCode = err.statusCode
@@ -16,7 +16,7 @@ if(err instanceof AppError) {
     message = err.message
 }
 
-
+// send response
 res.status(statusCode).json({
     success: false, 
     message: message,

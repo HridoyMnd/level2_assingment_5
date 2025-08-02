@@ -2,9 +2,9 @@ import { AppError } from "../../ErrorHelper/AppError";
 import { User } from "../user/user.model";
 import httpStatus from 'http-status-codes';
 import bcryptjs from 'bcryptjs';
-import { IUser } from "../user/user.interface";
-import { jwtController } from "../../utils/jwt";
-import { envVars } from "../../config";
+import { IUser } from "../user/user.interface"; 
+import { createAccTokenWithRfsToken, createUserToken } from "../../utils/userToken";
+
 
 
 // credentials login
@@ -19,23 +19,29 @@ const credentialLoginS = async (payload: Partial<IUser>) => {
     throw new AppError(httpStatus.BAD_REQUEST, "password does not matched");
   }
 
-  // jwt payload
-  const jwtPayload= {
-    userId: isUserExist._id,
-    email: isUserExist.email,
-    role: isUserExist.role
-  }
+const userToken =  createUserToken(isUserExist);  
+const {password: pass, ...rest} = isUserExist.toObject();
 
- const accessToken = jwtController.generateToken(jwtPayload, envVars.JWT_ACCESS_SECRET, envVars.JWT_ACCESS_EXPIRESIN)
-
-  
 return {
-    email: isUserExist.email,
-     acess:accessToken
+  accessToken: userToken.accessToken ,
+  refreshToken: userToken.refreshToken,
+  user: rest,
 };
 }; 
 
+
+//get access token 
+const getNewAccessTokenS = async (refreshToken:string) => {
+const accessToken = await createAccTokenWithRfsToken(refreshToken)
+
+  return {
+    accessToken: accessToken
+  };
+};
+
+
 // auth service controller 
 export const authServiceController = {
-    credentialLoginS
+    credentialLoginS,
+    getNewAccessTokenS
 };

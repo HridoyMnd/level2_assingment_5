@@ -3,16 +3,16 @@ import { IAuthProvider, UserRole } from "../modules/user/user.interface";
 import { User } from "../modules/user/user.model";
 import bcryptjs from 'bcryptjs';
 
+
+// seed admin with default
 export const seedAdmin = async () => {
     try {
         const isAdminExist = await User.findOne({email: envVars.ADMIN_EMAIL});
         if(isAdminExist){
-            console.log("super admin already exist");
             return; 
         }
 
         const authProvider: IAuthProvider = {provider: "credentials", providerId: envVars.ADMIN_EMAIL};
-
         const hashPassword = await bcryptjs.hash(envVars.ADMIN_PASSWORD, envVars.BCRYPT_SALT_ROUND);
 
         const payload = {
@@ -27,6 +27,6 @@ export const seedAdmin = async () => {
         await User.create(payload);
 
     } catch (error) {
-console.log(error);
+        
     }
 };

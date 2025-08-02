@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken';
 
 // generate jwttoken
 const generateToken = (jwtPayload:JwtPayload, secret: string, expiresIn:string) => {
-
     const token =  jwt.sign(jwtPayload, secret, {
         expiresIn
     } as SignOptions)

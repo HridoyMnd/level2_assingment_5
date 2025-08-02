@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { IsActive, UserRole } from "./user.interface";
 
+
+// userCreate zodschema
  export const createUserZodSchema = z.object({
   name: z
     .string({ invalid_type_error: "Name must be string" })

@@ -6,7 +6,6 @@ import { seedAdmin } from "./app/utils/seedAdmin";
 
 
 let server: Server;
-
 const startServer = async () => {
   try {
     await mongoose.connect(envVars.DB_URL);
@@ -21,6 +20,8 @@ const startServer = async () => {
   }
 };
 
+
+// server call and auto seed admin
 ( async() => {
   await startServer();
   await seedAdmin();

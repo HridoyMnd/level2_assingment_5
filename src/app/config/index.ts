@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+
+// env vars interface
 interface EnvConfig {
     PORT: string ,
     DB_URL: string,
@@ -14,16 +16,21 @@ interface EnvConfig {
     ADMIN_PASSWORD:string, 
 }
 
+
+// env vars loading 
 const loadEnvVariables = (): EnvConfig => {
   const requrementVariables: string[] = [
 "PORT", "DB_URL", "NODE_ENV","JWT_ACCESS_SECRET", "JWT_REFRESH_SECRET", "JWT_REFRESH_EXPIRESIN", "JWT_ACCESS_EXPIRESIN", "BCRYPT_SALT_ROUND", "ADMIN_EMAIL", "ADMIN_PASSWORD",
   ];
 
+  // check env vars 
   requrementVariables.map((key) => {
     if (!process.env[key]) {
       throw new Error(`Missing require Variable ${key}`);
     }
   });
+
+  // return env vars
   return {
     PORT: process.env.PORT as string ,
     DB_URL: process.env.DB_URL as string, 
