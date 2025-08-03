@@ -32,7 +32,7 @@ try {
         throw new AppError(httpStatus.FORBIDDEN, "You have not Permit to access this route");
     }
 
-    req.user = verify_token
+    req.user_r = verify_token
     next()
 } catch (error) {
     next(error)

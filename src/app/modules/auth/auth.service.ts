@@ -2,32 +2,9 @@ import { AppError } from "../../ErrorHelper/AppError";
 import { User } from "../user/user.model";
 import httpStatus from 'http-status-codes';
 import bcryptjs from 'bcryptjs';
-import { IUser } from "../user/user.interface"; 
-import { createAccTokenWithRfsToken, createUserToken } from "../../utils/userToken";
-
-
-
-// credentials login
-const credentialLoginS = async (payload: Partial<IUser>) => { 
-  const { email, password } = payload;
-  const isUserExist = await User.findOne({ email });
-  if (!isUserExist) {
-    throw new AppError(httpStatus.BAD_REQUEST, "User Does not exist");
-  }
-  const isPasswordMatched =await bcryptjs.compare(password as string, isUserExist.password as string);
-  if(!isPasswordMatched){
-    throw new AppError(httpStatus.BAD_REQUEST, "password does not matched");
-  }
-
-const userToken =  createUserToken(isUserExist);  
-const {password: pass, ...rest} = isUserExist.toObject();
-
-return {
-  accessToken: userToken.accessToken ,
-  refreshToken: userToken.refreshToken,
-  user: rest,
-};
-}; 
+import { createAccTokenWithRfsToken } from "../../utils/userToken";
+import { JwtPayload } from "jsonwebtoken";
+import { envVars } from "../../config";
 
 
 //get access token 
@@ -39,9 +16,21 @@ const accessToken = await createAccTokenWithRfsToken(refreshToken)
   };
 };
 
+//get access token 
+const resetPasswordS = async (newPassword:string, oldPassword:string, decodedToken:JwtPayload ) => {
+  const user = await User.findById(decodedToken.userId);
+  const isOldPasswordMathced = await bcryptjs.compare(oldPassword, user!.password as string);
+  if(!isOldPasswordMathced){
+    throw new AppError(httpStatus.BAD_REQUEST, "Old password not mathced");
+  }
+
+  user!.password = await bcryptjs.hash(newPassword, envVars.BCRYPT_SALT_ROUND);
+  user!.save();
+
+};
 
 // auth service controller 
 export const authServiceController = {
-    credentialLoginS,
-    getNewAccessTokenS
+    getNewAccessTokenS,
+    resetPasswordS
 };

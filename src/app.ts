@@ -5,9 +5,19 @@ import { router } from './app/routes';
 import { notFound } from './app/middleware/notFound';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import { envVars } from './app/config';
+import passport from 'passport';
+import expressSession  from 'express-session';
+import "./app/config/passport";
 export const app = express();
 
-
+app.use(expressSession({
+  secret: envVars.EXPRESS_SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(cookieParser())
 app.use(cors())
 app.use(express.json());

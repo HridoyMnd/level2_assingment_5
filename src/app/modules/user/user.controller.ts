@@ -38,7 +38,7 @@ const getAllUsersC = catchAsync(async (req: Request, res: Response, next: NextFu
 // update user
 const updateUserC = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.params.id;
-    const verifiedToken = req.user
+    const verifiedToken = req.user_r
     const payload = req.body;
     const user = await ServiceController.updateUserS(userId, payload, verifiedToken as JwtPayload);
 
