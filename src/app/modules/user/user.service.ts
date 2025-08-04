@@ -5,6 +5,7 @@ import { IAuthProvider, IUser, UserRole } from "./user.interface";
 import { User } from "./user.model";
 import bcryptjs from 'bcryptjs';
 import httpStatus from "http-status-codes";
+import { createWallet } from "../../utils/createWallet";
 
 
 // create user
@@ -24,6 +25,7 @@ const createUserS = async (payload: Partial<IUser>) => {
     ...rest,
     auths: [authProviders]
   });
+  await createWallet(user._id)
   return user;
 };
 

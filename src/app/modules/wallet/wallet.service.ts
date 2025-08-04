@@ -1,26 +1,21 @@
-import { Types } from "mongoose";
+import { Wallet } from "./wallet.model";
 
-export interface IWallet {
-  user: Types.ObjectId; // Linked User ID
-  balance: number; // Current balance (in smallest unit)
-  currency: 'BDT' | 'USD';
-  status: 'active' | 'suspended';
-  walletId?: string; // Optional unique identifier like 'WAL-2025001'
-  kycVerified?: boolean;
-  lastTransactionDate?: Date;
-  transactionLimit?: {
-    daily?: number;
-    monthly?: number;
+// get all users
+const getAllWalletS = async () => {
+  const users = await Wallet.find({});
+
+  const totalUsers = await Wallet.countDocuments();
+  return {
+    data: users,
+    meta: {
+      total: totalUsers,
+    },
   };
-  linkedPhoneNumber?: string;
-  linkedNID?: string;
-  linkedBankAccount?: {
-    bankName: string;
-    accountNumber: string;
-  };
-  securityPin?: string; // hashed pin
-  isFrozen?: boolean;
-  isPrimary?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+};
+
+
+// user service controller
+export const WalletServiceController = {
+ getAllWalletS,
+
+};
