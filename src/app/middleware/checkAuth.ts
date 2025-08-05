@@ -16,7 +16,6 @@ try {
         throw new AppError(httpStatus.NOT_FOUND, "token not found")
     }
     const verify_token = jwtController.verifyToken(access_token, envVars.JWT_ACCESS_SECRET) as JwtPayload
-    console.log(verify_token);
 
     const isUserExist = await User.findOne({ email:verify_token.email });
     if (!isUserExist) {
