@@ -20,15 +20,15 @@ export enum TStatus {
 export interface ITransaction {
   transaction_type: TType;
   amount: number;
-  currency: string;
-  status: TStatus;
+  currency?: string;
+  status?: TStatus;
   paymentMethod?: string;
   fromWallet?: Types.ObjectId; 
   toWallet?: Types.ObjectId;
   initiatedBy: Types.ObjectId; 
   approvedBy?: Types.ObjectId;
   userId: string;
-  transaction_fee: number;
+  transaction_fee?: number;
   balanceBefore?: number;
   balanceAfter?: number;
   deviceInfo?: string;
