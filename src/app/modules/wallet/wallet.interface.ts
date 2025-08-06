@@ -5,7 +5,6 @@ export enum WalletStatus {
   ACTIVE = "ACTIVE",
   SUSPENND = "SUSPENND",
   CLOSED = "CLOSED",
-  PENDING = "PENDING",
 }
 
 // linkedBankAccout interface

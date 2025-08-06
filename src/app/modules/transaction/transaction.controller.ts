@@ -7,15 +7,26 @@ import httpStatus from 'http-status-codes';
 
 // create transaction
 const createTransactionC = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const user = await transactionServiceController.createTransactionS(req.body);
+  const decodedInfo = req.user_r
+  const payload = req.body;
+  const { transaction, session }= await transactionServiceController.createTransactionS(payload, decodedInfo);
+try {
+
+      await session.commitTransaction();
+      session.endSession();
 
     //response send
     sendResponse(res, {
       success: true, 
       statusCode: httpStatus.CREATED,  
       message: "Transaction created Successfully",
-      data: user
+      data: transaction
     });
+} catch (error) {
+        await session.abortTransaction();
+      session.endSession();
+      next(error)
+}
 });
 
 

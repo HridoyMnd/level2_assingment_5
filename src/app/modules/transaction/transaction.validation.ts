@@ -1,16 +1,6 @@
 import { z } from "zod";
 import { Types } from "mongoose";
-
-// Enum validations
-export const TTypeEnum = z.enum([
-  "CASH_IN",
-  "CASH_OUT",
-  "SEND_MONEY",
-  "ADD_MONEY",
-  "WITHDRAW_MONEY",
-]);
-
-export const TStatusEnum = z.enum(["PENDING", "SUCCESS", "FAILED"]);
+import { TStatus, TType } from "./transaction.interface";
 
 // Mongoose ObjectId validation using regex or custom refinement
 const objectIdSchema = z
@@ -21,13 +11,13 @@ const objectIdSchema = z
 
 // Transaction Zod Schema
 export const createTransactionZodSchema = z.object({
-  transaction_type: TTypeEnum,
+  transaction_type: z.enum(Object.values(TType) as [string]),
   amount: z.number().positive(),
   currency: z.string().min(1).optional(),
-  status: TStatusEnum.optional(),
+  status: z.enum(Object.values(TStatus) as [string]).optional(),
   paymentMethod: z.string().optional(),
-  fromWallet: objectIdSchema.optional(),
-  toWallet: objectIdSchema.optional(),
+  fromWallet: objectIdSchema,
+  toWallet: objectIdSchema,
   initiatedBy: objectIdSchema,
   approvedBy: objectIdSchema.optional(),
   userId: z.string().min(1),

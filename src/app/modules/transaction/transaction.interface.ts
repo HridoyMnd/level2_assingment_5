@@ -23,8 +23,8 @@ export interface ITransaction {
   currency?: string;
   status?: TStatus;
   paymentMethod?: string;
-  fromWallet?: Types.ObjectId; 
-  toWallet?: Types.ObjectId;
+  fromWallet: Types.ObjectId; 
+  toWallet: Types.ObjectId;
   initiatedBy: Types.ObjectId; 
   approvedBy?: Types.ObjectId;
   userId: string;
