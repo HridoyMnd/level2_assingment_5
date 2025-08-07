@@ -9,7 +9,10 @@ import { WalletStatus } from "../wallet/wallet.interface";
 import mongoose from "mongoose";
 
 // create transaction
-const createTransactionS = async (payload: Partial<ITransaction>, decodedInfo: JwtPayload) => {
+const createTransactionS = async (
+  payload: Partial<ITransaction>,
+  decodedInfo: JwtPayload
+) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   const transaction_type = payload?.transaction_type;
@@ -22,20 +25,31 @@ const createTransactionS = async (payload: Partial<ITransaction>, decodedInfo: J
 
   //  agent transaction condition check
   if (user_role === UserRole.AGENT) {
-    if (transaction_type !== TType.CASH_IN && transaction_type !== TType.CASH_OUT){
-        throw new AppError(httpStatus.FORBIDDEN, `You are ${user_role}. You can't do ${transaction_type}`);
+    if (
+      transaction_type !== TType.CASH_IN &&
+      transaction_type !== TType.CASH_OUT
+    ) {
+      throw new AppError(
+        httpStatus.FORBIDDEN,
+        `You are ${user_role}. You can't do ${transaction_type}`
+      );
     }
   }
 
   // user transaction condition check
- if (user_role === UserRole.USER) {
-    if (transaction_type === TType.CASH_IN || transaction_type === TType.CASH_OUT) { 
-      throw new AppError( httpStatus.FORBIDDEN,`You are ${user_role}. You can't do ${transaction_type}` );
+  if (user_role === UserRole.USER) {
+    if (
+      transaction_type === TType.CASH_IN ||
+      transaction_type === TType.CASH_OUT
+    ) {
+      throw new AppError(
+        httpStatus.FORBIDDEN,
+        `You are ${user_role}. You can't do ${transaction_type}`
+      );
     }
   }
 
-
-// from wallet conditon check
+  // from wallet conditon check
   if (!from_wallet) {
     throw new AppError(httpStatus.NOT_FOUND, "Sender Wallet is not Found");
   }
@@ -57,7 +71,7 @@ const createTransactionS = async (payload: Partial<ITransaction>, decodedInfo: J
     throw new AppError(httpStatus.BAD_REQUEST, "Receiver Wallet is not Active");
   }
 
-    // Update balances
+  // Update balances
   from_wallet.balance = (from_wallet.balance ?? 0) - amount;
   to_wallet.balance = (to_wallet.balance ?? 0) + amount;
 
@@ -66,7 +80,6 @@ const createTransactionS = async (payload: Partial<ITransaction>, decodedInfo: J
   const transaction = await Transaction.create([payload], { session });
   return { transaction: transaction[0], session };
 };
-
 
 // get all transaction
 const getAllTransactionS = async () => {
@@ -80,14 +93,12 @@ const getAllTransactionS = async () => {
   };
 };
 
-
 // get my transaction
-const getMyTransactionS = async (userId:string) => {
-    const transaction = await Transaction.find({userId:userId});
-  if (transaction.length === 0 ) {
+const getMyTransactionS = async (userId: string) => {
+  const transaction = await Transaction.find({ userId: userId });
+  if (transaction.length === 0) {
     throw new AppError(httpStatus.NOT_FOUND, "Transaction not found");
   }
-
 
   const totalTransactoin = await Transaction.countDocuments();
   return {
@@ -98,18 +109,24 @@ const getMyTransactionS = async (userId:string) => {
   };
 };
 
-
 // transaction update
-const updateTransactionS = async (transactionId: string, payload: Partial<ITransaction>, ) => {
+const updateTransactionS = async (
+  transactionId: string,
+  payload: Partial<ITransaction>
+) => {
   const isTransactionExist = await Transaction.findById(transactionId);
 
   if (!isTransactionExist) {
     throw new AppError(httpStatus.NOT_FOUND, "Transactoin not Found");
   }
-  const newUpdatedTransaction = await Transaction.findByIdAndUpdate(transactionId, payload, {
-    new: true,
-    runValidators: true,
-  });
+  const newUpdatedTransaction = await Transaction.findByIdAndUpdate(
+    transactionId,
+    payload,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
   return newUpdatedTransaction;
 };
 
@@ -124,12 +141,11 @@ const deleteTransactionS = async (transactionId: string) => {
   return null;
 };
 
-
 // transaction service controller
 export const transactionServiceController = {
   createTransactionS,
   getAllTransactionS,
   getMyTransactionS,
   updateTransactionS,
-  deleteTransactionS
+  deleteTransactionS,
 };
