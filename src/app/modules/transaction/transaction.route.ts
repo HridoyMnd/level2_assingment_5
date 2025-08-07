@@ -10,9 +10,8 @@ const router = Router();
 router.post("/create_transaction", checkAuth(UserRole.USER, UserRole.AGENT), validateRequest(createTransactionZodSchema), transactionController.createTransactionC);
 router.get("/all_transaction", checkAuth(UserRole.ADMIN), transactionController.getAllTransactionC);
 router.get("/my_transaction", checkAuth(UserRole.USER, UserRole.AGENT), transactionController.getMyTransactionC);
-router.post("/transaction_update/:id", checkAuth(UserRole.ADMIN), validateRequest(updateTransactionZodSchema), transactionController.updateTransactionC);
-
-
+router.patch("/transaction_update/:id", checkAuth(UserRole.ADMIN), validateRequest(updateTransactionZodSchema), transactionController.updateTransactionC);
+router.delete("/transaction_delete/:id", checkAuth(UserRole.ADMIN), transactionController.deleteTransactionC);
 
 
 // export router

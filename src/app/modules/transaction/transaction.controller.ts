@@ -77,10 +77,25 @@ const updateTransactionC = catchAsync(async (req: Request, res: Response, next: 
 });
 
 
+// delete transaction
+const deleteTransactionC = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const  transactionId = req.params.id;
+    const transaction = await transactionServiceController.deleteTransactionS(transactionId);
+
+    //response send
+    sendResponse(res, {
+      success: true, 
+      statusCode: httpStatus.CREATED,  
+      message: "Transaction updated Successfully",
+      data: transaction
+    });
+});
+
 // transaction controller
 export const transactionController = {
     createTransactionC,
     getAllTransactionC,
     getMyTransactionC,
-    updateTransactionC
+    updateTransactionC,
+    deleteTransactionC
 }

@@ -37,19 +37,19 @@ const getMyWalletC = catchAsync(async (req: Request, res: Response, next: NextFu
 });
 
 
-// update user
+// update wallet
 const updateWalletC = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const  walletId = req.params.id;
     const verifiedToken = req.user_r;
     const payload = req.body;
-    const user = await WalletServiceController.updateWalletS(walletId, payload, verifiedToken as JwtPayload);
+    const wallet = await WalletServiceController.updateWalletS(walletId, payload, verifiedToken as JwtPayload);
 
     //response send
     sendResponse(res, {
       success: true, 
       statusCode: httpStatus.CREATED,  
       message: "Wallet updated Successfully",
-      data: user
+      data: wallet
     });
 });
 
@@ -58,14 +58,14 @@ const updateWalletC = catchAsync(async (req: Request, res: Response, next: NextF
 const deleteWalletC = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const  walletId = req.params.id;
     const verifiedToken = req.user_r;
-    const user = await WalletServiceController.deleteWalletS(walletId, verifiedToken as JwtPayload);
+    const wallet = await WalletServiceController.deleteWalletS(walletId, verifiedToken as JwtPayload);
 
     //response send
     sendResponse(res, {
       success: true, 
       statusCode: httpStatus.CREATED,  
       message: "Wallet updated Successfully",
-      data: user
+      data: wallet
     });
 });
 

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { Types } from "mongoose";
 import { TStatus, TType } from "./transaction.interface";
 
-// Mongoose ObjectId validation using regex or custom refinement
+// Mongoose ObjectId validation 
 const objectIdSchema = z
   .string()
   .refine((val) => Types.ObjectId.isValid(val), {

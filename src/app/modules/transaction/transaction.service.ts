@@ -113,7 +113,16 @@ const updateTransactionS = async (transactionId: string, payload: Partial<ITrans
   return newUpdatedTransaction;
 };
 
+// delete transaction
+const deleteTransactionS = async (transactionId: string) => {
+  const transaction = await Transaction.findById(transactionId);
+  if (!transaction) {
+    throw new AppError(httpStatus.NOT_FOUND, "Transaction not found");
+  }
 
+  await Transaction.findByIdAndDelete(transactionId)
+  return null
+};
 
 
 // transaction service controller
@@ -121,5 +130,6 @@ export const transactionServiceController = {
   createTransactionS,
   getAllTransactionS,
   getMyTransactionS,
-  updateTransactionS
+  updateTransactionS,
+  deleteTransactionS
 };
