@@ -38,25 +38,15 @@ const getMyWalletS = async (userId: Types.ObjectId) => {
 };
 
 // update user api
-const updateWalletS = async (
-  walletId: string,
-  payload: Partial<IWallet>,
-  decodedTokenn: JwtPayload
-) => {
+const updateWalletS = async (walletId: string, payload: Partial<IWallet>, decodedTokenn: JwtPayload) => {
   const isWalletExist = await Wallet.findById(walletId);
   const walletOwner = isWalletExist?.userId.toString();
 
   if (!isWalletExist) {
     throw new AppError(httpStatus.NOT_FOUND, "Wallet not Found");
   }
-  if (
-    decodedTokenn.role !== UserRole.ADMIN &&
-    decodedTokenn.userId !== walletOwner
-  ) {
-    throw new AppError(
-      httpStatus.FORBIDDEN,
-      "You have no permit to acces this"
-    );
+  if (decodedTokenn.role !== UserRole.ADMIN && decodedTokenn.userId !== walletOwner) {
+    throw new AppError(httpStatus.FORBIDDEN,"You have no permit to acces this" );
   }
   if (payload.IsActive || payload.IsVerified || payload.transactionLimit) {
     if (decodedTokenn.role !== UserRole.ADMIN) {

@@ -12,13 +12,13 @@ import mongoose from "mongoose";
 const createTransactionS = async (payload: Partial<ITransaction>, decodedInfo: JwtPayload) => {
   const session = await mongoose.startSession();
   session.startTransaction();
-  const transaction_type = payload.transaction_type;
-  const user_role = decodedInfo.role;
-  const from_wallet_id = payload.fromWallet;
-  const to_wallet_id = payload.toWallet;
-  const amount = payload.amount as number;
-  const from_wallet = await Wallet.findById(from_wallet_id).session(session);
-  const to_wallet = await Wallet.findById(to_wallet_id).session(session);
+  const transaction_type = payload?.transaction_type;
+  const user_role = decodedInfo?.role;
+  const from_wallet_id = payload?.fromWallet;
+  const to_wallet_id = payload?.toWallet;
+  const amount = payload?.amount as number;
+  const from_wallet = await Wallet?.findById(from_wallet_id).session(session);
+  const to_wallet = await Wallet?.findById(to_wallet_id).session(session);
 
   //  agent transaction condition check
   if (user_role === UserRole.AGENT) {
@@ -37,24 +37,24 @@ const createTransactionS = async (payload: Partial<ITransaction>, decodedInfo: J
 
 // from wallet conditon check
   if (!from_wallet) {
-    throw new AppError(httpStatus.NOT_FOUND, "Your Wallet is not Found");
+    throw new AppError(httpStatus.NOT_FOUND, "Sender Wallet is not Found");
   }
   if (from_wallet.IsActive !== WalletStatus.ACTIVE) {
-    throw new AppError(httpStatus.BAD_REQUEST, "Your Wallet is not Active");
+    throw new AppError(httpStatus.BAD_REQUEST, "Sender Wallet is not Active");
   }
   if ((from_wallet.balance ?? 0) < amount) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      "You have no sufficient balance"
+      "Sender have no sufficient balance"
     );
   }
 
   // to wallet condition check
   if (!to_wallet) {
-    throw new AppError(httpStatus.NOT_FOUND, "Your Wallet is not Found");
+    throw new AppError(httpStatus.NOT_FOUND, "Reciever Wallet is not Found");
   }
   if (to_wallet.IsActive !== WalletStatus.ACTIVE) {
-    throw new AppError(httpStatus.BAD_REQUEST, "Your Wallet is not Active");
+    throw new AppError(httpStatus.BAD_REQUEST, "Receiver Wallet is not Active");
   }
 
     // Update balances
@@ -63,8 +63,6 @@ const createTransactionS = async (payload: Partial<ITransaction>, decodedInfo: J
 
   await from_wallet.save({ session });
   await to_wallet.save({ session });
-
-
   const transaction = await Transaction.create([payload], { session });
   return { transaction: transaction[0], session }
 };
@@ -82,8 +80,46 @@ const getAllTransactionS = async () => {
   };
 };
 
+
+// get my transaction
+const getMyTransactionS = async (userId:string) => {
+    const transaction = await Transaction.find({userId:userId});
+  if (transaction.length === 0 ) {
+    throw new AppError(httpStatus.NOT_FOUND, "Transaction not found");
+  }
+
+
+  const totalTransactoin = await Transaction.countDocuments();
+  return {
+    data: transaction,
+    meta: {
+      total: totalTransactoin,
+    },
+  };
+};
+
+
+// transaction update
+const updateTransactionS = async (transactionId: string, payload: Partial<ITransaction>, ) => {
+  const isTransactionExist = await Transaction.findById(transactionId);
+
+  if (!isTransactionExist) {
+    throw new AppError(httpStatus.NOT_FOUND, "Transactoin not Found");
+  }
+  const newUpdatedTransaction = await Transaction.findByIdAndUpdate(transactionId, payload, {
+    new: true,
+    runValidators: true,
+  });
+  return newUpdatedTransaction;
+};
+
+
+
+
 // transaction service controller
 export const transactionServiceController = {
   createTransactionS,
   getAllTransactionS,
+  getMyTransactionS,
+  updateTransactionS
 };
