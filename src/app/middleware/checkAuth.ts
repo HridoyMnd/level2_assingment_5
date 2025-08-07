@@ -13,9 +13,9 @@ export const checkAuth = (...authRoles:string[]) => async (req: Request, res: Re
 try {
     const access_token =  req.headers.authorization;
     if(!access_token){
-        throw new AppError(httpStatus.NOT_FOUND, "token not found")
+        throw new AppError(httpStatus.NOT_FOUND, "token not found");
     }
-    const verify_token = jwtController.verifyToken(access_token, envVars.JWT_ACCESS_SECRET) as JwtPayload
+    const verify_token = jwtController.verifyToken(access_token, envVars.JWT_ACCESS_SECRET) as JwtPayload;
 
     const isUserExist = await User.findOne({ email:verify_token.email });
     if (!isUserExist) {
@@ -31,9 +31,9 @@ try {
         throw new AppError(httpStatus.FORBIDDEN, "You have not Permit to access this route");
     }
 
-    req.user_r = verify_token
-    next()
+    req.user_r = verify_token;
+    next();
 } catch (error) {
-    next(error)
+    next(error);
 }
-}
+};

@@ -64,7 +64,7 @@ const createTransactionS = async (payload: Partial<ITransaction>, decodedInfo: J
   await from_wallet.save({ session });
   await to_wallet.save({ session });
   const transaction = await Transaction.create([payload], { session });
-  return { transaction: transaction[0], session }
+  return { transaction: transaction[0], session };
 };
 
 
@@ -120,8 +120,8 @@ const deleteTransactionS = async (transactionId: string) => {
     throw new AppError(httpStatus.NOT_FOUND, "Transaction not found");
   }
 
-  await Transaction.findByIdAndDelete(transactionId)
-  return null
+  await Transaction.findByIdAndDelete(transactionId);
+  return null;
 };
 
 

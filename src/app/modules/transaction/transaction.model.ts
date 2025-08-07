@@ -22,7 +22,7 @@ const transactionSchmma = new Schema<ITransaction>({
 }, {
     timestamps:true, 
     versionKey:false
-})
+});
 
 
 // transaction model 

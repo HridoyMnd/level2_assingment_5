@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 import { sendResponse } from "../../utils/sendResponse";
 import { WalletServiceController } from "./wallet.service";
 import httpStatus from 'http-status-codes';
 import { catchAsync } from "../../utils/catchAsync";
 import { JwtPayload } from "jsonwebtoken";
-import { Types } from "mongoose";
 
 
 // get all wallets
@@ -23,7 +23,7 @@ const getAllWalletC = catchAsync(async (req: Request, res: Response, next: NextF
 
 // get my wallet
 const getMyWalletC = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const userId = (req.user_r.userId)
+  const userId = (req.user_r.userId);
   const wallet = await WalletServiceController.getMyWalletS(userId);
 
     // response send
@@ -57,8 +57,7 @@ const updateWalletC = catchAsync(async (req: Request, res: Response, next: NextF
 // delete wallet
 const deleteWalletC = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const  walletId = req.params.id;
-    const verifiedToken = req.user_r;
-    const wallet = await WalletServiceController.deleteWalletS(walletId, verifiedToken as JwtPayload);
+    const wallet = await WalletServiceController.deleteWalletS(walletId);
 
     //response send
     sendResponse(res, {

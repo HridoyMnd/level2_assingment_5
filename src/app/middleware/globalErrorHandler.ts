@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
 import { envVars } from '../config';
 import { AppError } from '../ErrorHelper/AppError';
@@ -44,16 +46,16 @@ let message = `Something is wrong, ${err.message}`;
         statusCode = simlifyZodError.statusCode;
         message = simlifyZodError.message;
 
-        errorSource = simlifyZodError.errorSources as TErrorSources[]
+        errorSource = simlifyZodError.errorSources as TErrorSources[];
     }
 
 
 if(err instanceof AppError) {
-    statusCode = err.statusCode
-    message = err.message
+    statusCode = err.statusCode;
+    message = err.message;
 }else if(err instanceof Error){
-    statusCode = 500
-    message = err.message
+    statusCode = 500;
+    message = err.message;
 }
 
 // send response
@@ -63,6 +65,6 @@ res.status(statusCode).json({
     errorSource,
     err:envVars.NODE_ENV === "development"? err: null,
     stack: envVars.NODE_ENV === "development"? err.stack: null
-})
+});
 
-})
+});

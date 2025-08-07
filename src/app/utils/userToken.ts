@@ -14,7 +14,7 @@ export const createUserToken = (user: Partial<IUser>) => {
     userId: user._id,
     email: user.email,
     role: user.role
-  }
+  };
 
  const accessToken = jwtController.generateToken(jwtPayload, envVars.JWT_ACCESS_SECRET, envVars.JWT_ACCESS_EXPIRESIN);
  const refreshToken = jwtController.generateToken(jwtPayload, envVars.JWT_REFRESH_SECRET, envVars.JWT_REFRESH_EXPIRESIN);
@@ -22,12 +22,12 @@ export const createUserToken = (user: Partial<IUser>) => {
  return {
     accessToken,
     refreshToken, 
- }
-}
+ };
+};
 
 // new accesToken with refresh token
 export const createAccTokenWithRfsToken = async (refreshToken: string) => {
-  const verifyRefreshToken = jwtController.verifyToken(refreshToken, envVars.JWT_REFRESH_SECRET) as JwtPayload
+  const verifyRefreshToken = jwtController.verifyToken(refreshToken, envVars.JWT_REFRESH_SECRET) as JwtPayload;
   const isUserExist = await User.findOne({ email: verifyRefreshToken.email });
   if (!isUserExist) {
     throw new AppError(httpStatus.BAD_REQUEST, "User Does not exist");
@@ -43,9 +43,9 @@ export const createAccTokenWithRfsToken = async (refreshToken: string) => {
     userId: isUserExist._id,
     email: isUserExist.email,
     role: isUserExist.role
-  }
+  };
 
-  const accestoken = jwtController.generateToken(jwtPayload, envVars.JWT_ACCESS_SECRET, envVars.JWT_ACCESS_EXPIRESIN)
+  const accestoken = jwtController.generateToken(jwtPayload, envVars.JWT_ACCESS_SECRET, envVars.JWT_ACCESS_EXPIRESIN);
   return accestoken;
 
 };

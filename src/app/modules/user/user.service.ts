@@ -11,7 +11,7 @@ import { createWallet } from "../../utils/createWallet";
 // create user
 const createUserS = async (payload: Partial<IUser>) => {
   const { email, password, ...rest} = payload;
-  const isUserExist = await User.findOne({email})
+  const isUserExist = await User.findOne({email});
   if (isUserExist) {
     throw new AppError(httpStatus.NOT_FOUND, "User already Exist");
   }
@@ -25,7 +25,7 @@ const createUserS = async (payload: Partial<IUser>) => {
     ...rest,
     auths: [authProviders]
   });
-  await createWallet(user._id)
+  await createWallet(user._id);
   return user;
 };
 

@@ -16,26 +16,26 @@ passport.use(
           try {
             const isUserExist = await User.findOne({ email });
             if (!isUserExist) {
-                return done(null, false, {message: "User does not exist"})
+                return done(null, false, {message: "User does not exist"});
             }
 
-            const isGoogleAuthenticated = isUserExist.auths.some(providerObject => providerObject.provider === "google")
+            const isGoogleAuthenticated = isUserExist.auths.some(providerObject => providerObject.provider === "google");
             if(isGoogleAuthenticated && !isUserExist.password){
-                return done(null, false, {message: "You have authenticated with google"})
+                return done(null, false, {message: "You have authenticated with google"});
             }
 
               const isPasswordMatched =await bcryptjs.compare(password as string, isUserExist.password as string);
             if(!isPasswordMatched){
-                return done(null, false, {message: "Password not matched"})
+                return done(null, false, {message: "Password not matched"});
             }
 
-            return done(null, isUserExist)
+            return done(null, isUserExist);
 
        } catch (error) {
-            done(error)         
+            done(error);         
           }  
     })
-)
+);
 
 passport.use(
     new GoogleStrategy({
@@ -69,10 +69,9 @@ passport.use(
 
               }
 
-              return  done (null, user)
+              return  done (null, user);
 
         } catch (error) {
-            console.log("Google Stategy Error", error);
             return done(error);
         }
     })
@@ -88,7 +87,6 @@ passport.deserializeUser(async (id:string, done:any) => {
         const user = await User.findById(id);
         done(null, user);
     } catch (error) {
-        console.log(error);
-        done(error)
+        done(error);
     }
-})
+});

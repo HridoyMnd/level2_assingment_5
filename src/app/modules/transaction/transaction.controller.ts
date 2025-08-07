@@ -1,14 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
 import { transactionServiceController } from "./transaction.service";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from 'http-status-codes';
-import { JwtPayload } from "jsonwebtoken";
 
 
 // create transaction
 const createTransactionC = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const decodedInfo = req.user_r
+  const decodedInfo = req.user_r;
   const payload = req.body;
   const { transaction, session }= await transactionServiceController.createTransactionS(payload, decodedInfo);
 try {
@@ -26,7 +26,7 @@ try {
 } catch (error) {
         await session.abortTransaction();
       session.endSession();
-      next(error)
+      next(error);
 }
 });
 
@@ -47,7 +47,7 @@ const getAllTransactionC = catchAsync(async (req: Request, res: Response, next: 
 
 // get my transaction
 const getMyTransactionC = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const userId = (req.user_r.userId)
+    const userId = (req.user_r.userId);
     const transaction = await transactionServiceController.getMyTransactionS(userId);
 
     // response send
@@ -86,7 +86,7 @@ const deleteTransactionC = catchAsync(async (req: Request, res: Response, next: 
     sendResponse(res, {
       success: true, 
       statusCode: httpStatus.CREATED,  
-      message: "Transaction updated Successfully",
+      message: "Transaction Deleted Successfully",
       data: transaction
     });
 });
@@ -98,4 +98,4 @@ export const transactionController = {
     getMyTransactionC,
     updateTransactionC,
     deleteTransactionC
-}
+};

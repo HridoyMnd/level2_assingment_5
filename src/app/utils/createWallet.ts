@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Types } from "mongoose";
 import { Wallet } from "../modules/wallet/wallet.model";
 import { IWallet, WalletStatus } from "../modules/wallet/wallet.interface";

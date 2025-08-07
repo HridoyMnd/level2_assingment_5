@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { envVars } from "../config";
 import { IAuthProvider, UserRole } from "../modules/user/user.interface";
 import { User } from "../modules/user/user.model";
@@ -27,6 +28,6 @@ export const seedAdmin = async () => {
         await User.create(payload);
 
     } catch (error) {
-        
+        console.log(error);
     }
 };

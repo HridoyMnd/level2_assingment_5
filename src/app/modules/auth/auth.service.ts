@@ -9,7 +9,7 @@ import { envVars } from "../../config";
 
 //get access token 
 const getNewAccessTokenS = async (refreshToken:string) => {
-const accessToken = await createAccTokenWithRfsToken(refreshToken)
+const accessToken = await createAccTokenWithRfsToken(refreshToken);
 
   return {
     accessToken: accessToken
@@ -19,13 +19,16 @@ const accessToken = await createAccTokenWithRfsToken(refreshToken)
 //get access token 
 const resetPasswordS = async (newPassword:string, oldPassword:string, decodedToken:JwtPayload ) => {
   const user = await User.findById(decodedToken.userId);
-  const isOldPasswordMathced = await bcryptjs.compare(oldPassword, user!.password as string);
+  if(!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+  const isOldPasswordMathced = await bcryptjs.compare(oldPassword, user.password as string);
   if(!isOldPasswordMathced){
     throw new AppError(httpStatus.BAD_REQUEST, "Old password not mathced");
   }
 
-  user!.password = await bcryptjs.hash(newPassword, envVars.BCRYPT_SALT_ROUND);
-  user!.save();
+  user.password = await bcryptjs.hash(newPassword, envVars.BCRYPT_SALT_ROUND);
+  user.save();
 
 };
 

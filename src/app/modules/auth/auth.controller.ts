@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
@@ -15,14 +17,14 @@ import passport from "passport";
 const credentialLoginC = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     passport.authenticate("local",  async(err:any, user: any, info: any ) => {
       if(err) {
-          return next(new AppError(httpStatus.BAD_REQUEST, err))
+          return next(new AppError(httpStatus.BAD_REQUEST, err));
       }
       if(!user){
-        return next(new AppError(httpStatus.BAD_REQUEST, err))
+        return next(new AppError(httpStatus.BAD_REQUEST, err));
       }
 
-       const userTokens =  createUserToken(user)
-       const {password: pass, ...rest} = user.toObject()
+       const userTokens =  createUserToken(user);
+       const {password: pass, ...rest} = user.toObject();
 
    //set cookie and response send
     setCookie(res, userTokens);
@@ -36,7 +38,7 @@ const credentialLoginC = catchAsync(async (req: Request, res: Response, next: Ne
         user: rest
       }
     });
-    })(req, res, next)
+    })(req, res, next);
 });
 
 
@@ -46,7 +48,7 @@ const refToken = req.cookies.refreshToken;
 const tokenInfo = await authServiceController.getNewAccessTokenS(refToken as string);
 
     // set cookies and send response
-    setCookie(res, tokenInfo)
+    setCookie(res, tokenInfo);
     sendResponse(res, {
       success: true, 
       statusCode: httpStatus.CREATED,
@@ -64,6 +66,7 @@ res.clearCookie("accessToken", {
   secure:false,
   sameSite: "lax"
 });
+
 // clear refresh token
 res.clearCookie("refreshToken", {
   httpOnly:true,
@@ -101,7 +104,7 @@ const googleCallBackC = catchAsync(async (req: Request, res: Response, next: Nex
   let redirectTo = req.query.state? req.query.state as string:"" ;
 
   if(redirectTo) {
-    redirectTo = redirectTo.slice(1)
+    redirectTo = redirectTo.slice(1);
   }
 
   const user = req.user;

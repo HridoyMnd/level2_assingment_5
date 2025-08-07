@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express'
+import express, { Request, Response } from 'express';
 import httpStatus from "http-status-codes";
 import { globalErrorHandler } from './app/middleware/globalErrorHandler';
 import { router } from './app/routes';
@@ -18,10 +18,10 @@ app.use(expressSession({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cookieParser())
-app.use(cors())
+app.use(cookieParser());
+app.use(cors());
 app.use(express.json());
-app.use("/api/v1", router)
+app.use("/api/v1", router);
 
 
 // get route testing
@@ -29,10 +29,10 @@ app.get("/", (req: Request, res:Response) => {
     res.status(httpStatus.OK).json({
         succss:true,
         message: `Server is doing all right`
-    })
-})
+    });
+});
 
 
 //global error hanlder
 app.use(globalErrorHandler);
-app.use(notFound)
+app.use(notFound);

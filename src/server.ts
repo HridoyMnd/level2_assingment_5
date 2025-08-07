@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 import mongoose from "mongoose";
-import {Server} from 'http'
+import {Server} from 'http';
 import { envVars } from "./app/config";
 import { app } from "./app";
 import { seedAdmin } from "./app/utils/seedAdmin";
@@ -36,7 +37,7 @@ process.on("unhandledRejection", () => {
       process.exit(1);
     });
   };
-  process.exit(1)
+  process.exit(1);
 });
 
 // uncaught acception

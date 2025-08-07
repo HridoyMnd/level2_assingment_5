@@ -68,14 +68,14 @@ const updateWalletS = async (walletId: string, payload: Partial<IWallet>, decode
 };
 
 // get all users
-const deleteWalletS = async (walletId: string, decodedToken: JwtPayload) => {
+const deleteWalletS = async (walletId: string) => {
   const wallet = await Wallet.findById(walletId);
   if (!wallet) {
     throw new AppError(httpStatus.NOT_FOUND, "Wallet not found");
   }
 
-  await Wallet.findByIdAndDelete(walletId)
-  return null
+  await Wallet.findByIdAndDelete(walletId);
+  return null;
 };
 
 // user service controller

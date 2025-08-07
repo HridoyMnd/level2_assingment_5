@@ -67,4 +67,4 @@ const walletSchema = new Schema<IWallet>(
 
 
 // wallet model
-export const Wallet = model<IWallet>("Wallet", walletSchema)
+export const Wallet = model<IWallet>("Wallet", walletSchema);
