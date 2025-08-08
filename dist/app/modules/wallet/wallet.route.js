@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.walletRoutes = void 0;
+const express_1 = require("express");
+const checkAuth_1 = require("../../middleware/checkAuth");
+const user_interface_1 = require("../user/user.interface");
+const wallet_controller_1 = require("./wallet.controller");
+const wallet_validation_1 = require("./wallet.validation");
+const validateRequest_1 = require("../../middleware/validateRequest");
+const router = (0, express_1.Router)();
+router.get("/all_wallet", (0, checkAuth_1.checkAuth)(user_interface_1.UserRole.ADMIN), wallet_controller_1.WalletController.getAllWalletC);
+router.get("/my_wallet", (0, checkAuth_1.checkAuth)(...Object.values(user_interface_1.UserRole)), wallet_controller_1.WalletController.getMyWalletC);
+router.patch("/update/:id", (0, checkAuth_1.checkAuth)(...Object.values(user_interface_1.UserRole)), (0, validateRequest_1.validateRequest)(wallet_validation_1.updateWalletZodSchema), wallet_controller_1.WalletController.updateWalletC);
+router.delete("/delete/:id", (0, checkAuth_1.checkAuth)(user_interface_1.UserRole.ADMIN), wallet_controller_1.WalletController.deleteWalletC);
+exports.walletRoutes = router;
